@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -133,7 +134,15 @@ fun CustomerLoginScreen(
                     enabled = username.isNotBlank() && password.isNotBlank() && loginState !is UiState.Loading,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Войти", modifier = Modifier.padding(8.dp))
+                    if (loginState is UiState.Loading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(24.dp),
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        Text("Войти", modifier = Modifier.padding(8.dp))
+                    }
                 }
                 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -147,9 +156,7 @@ fun CustomerLoginScreen(
                         .clickable { navController.navigate(Screen.CustomerRegistration.route) }
                 )
                 
-                if (loginState is UiState.Loading) {
-                    CircularProgressIndicator(modifier = Modifier.padding(16.dp))
-                }
+                // Индикатор загрузки теперь отображается внутри кнопки
             }
         }
     }

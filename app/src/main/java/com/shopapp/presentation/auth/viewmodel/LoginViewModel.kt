@@ -16,7 +16,7 @@ class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
-    private val _loginState = MutableStateFlow<UiState<User>>(UiState.Loading)
+    private val _loginState = MutableStateFlow<UiState<User>>(UiState.Idle)
     val loginState: StateFlow<UiState<User>> = _loginState
 
     fun login(username: String, password: String) {
@@ -34,6 +34,6 @@ class LoginViewModel @Inject constructor(
     }
 
     fun resetState() {
-        _loginState.value = UiState.Loading
+        _loginState.value = UiState.Idle
     }
 }
