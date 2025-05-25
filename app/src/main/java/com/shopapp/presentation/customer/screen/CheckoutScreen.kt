@@ -110,6 +110,14 @@ fun CheckoutScreen(
                 .padding(paddingValues)
         ) {
             when (val state = cartItemsState) {
+                is UiState.Idle -> {
+                    // Показываем начальное состояние чекаута
+                    Text(
+                        text = "Загрузка информации для оформления заказа...",
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+                
                 is UiState.Loading -> {
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.Center)

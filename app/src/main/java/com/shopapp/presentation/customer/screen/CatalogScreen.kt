@@ -173,6 +173,14 @@ fun CatalogScreen(
                 .padding(paddingValues)
         ) {
             when (val state = productsState) {
+                is UiState.Idle -> {
+                    // Показываем начальное состояние каталога
+                    Text(
+                        text = "Загрузка каталога...",
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+                
                 is UiState.Loading -> {
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.Center)

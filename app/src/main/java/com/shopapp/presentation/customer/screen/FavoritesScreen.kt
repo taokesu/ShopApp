@@ -98,6 +98,14 @@ fun FavoritesScreen(
                 .padding(paddingValues)
         ) {
             when (val state = favoritesState) {
+                is UiState.Idle -> {
+                    // Показываем начальное состояние избранного
+                    Text(
+                        text = "Загрузка избранных товаров...",
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+                
                 is UiState.Loading -> {
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.Center)

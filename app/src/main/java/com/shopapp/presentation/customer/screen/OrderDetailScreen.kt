@@ -86,6 +86,14 @@ fun OrderDetailScreen(
                 .padding(paddingValues)
         ) {
             when (val state = orderDetailsState) {
+                is UiState.Idle -> {
+                    // Показываем начальное состояние деталей заказа
+                    Text(
+                        text = "Загрузка информации о заказе...",
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+                
                 is UiState.Loading -> {
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.Center)

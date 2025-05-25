@@ -75,7 +75,8 @@ fun CustomerRegistrationScreen(
             is UiState.Error -> {
                 snackbarHostState.showSnackbar((registrationState as UiState.Error).message)
             }
-            else -> {}
+            is UiState.Loading -> {}
+            is UiState.Idle -> {}
         }
     }
     
@@ -208,14 +209,15 @@ fun CustomerRegistrationScreen(
                             registrationState !is UiState.Loading,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Зарегистрироваться", modifier = Modifier.padding(8.dp))
+                    // Показываем текст кнопки или индикатор загрузки внутри кнопки
+                    if (registrationState is UiState.Loading) {
+                        CircularProgressIndicator(modifier = Modifier.padding(8.dp), color = MaterialTheme.colorScheme.onPrimary)
+                    } else {
+                        Text("Зарегистрироваться", modifier = Modifier.padding(8.dp))
+                    }
                 }
                 
                 Spacer(modifier = Modifier.height(16.dp))
-                
-                if (registrationState is UiState.Loading) {
-                    CircularProgressIndicator(modifier = Modifier.padding(16.dp))
-                }
                 
                 Text(
                     text = "* - обязательные поля",

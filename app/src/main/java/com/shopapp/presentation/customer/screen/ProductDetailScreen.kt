@@ -135,6 +135,14 @@ fun ProductDetailScreen(
                 .padding(paddingValues)
         ) {
             when (val state = productState) {
+                is UiState.Idle -> {
+                    // Показываем начальное состояние деталей товара
+                    Text(
+                        text = "Загрузка информации о товаре...",
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+                
                 is UiState.Loading -> {
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.Center)

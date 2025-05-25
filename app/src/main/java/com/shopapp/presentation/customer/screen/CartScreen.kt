@@ -138,6 +138,14 @@ fun CartScreen(
                 .padding(paddingValues)
         ) {
             when (val state = cartItemsState) {
+                is UiState.Idle -> {
+                    // Показываем пустой экран или сообщение о загрузке данных
+                    Text(
+                        text = "Загрузка данных корзины...",
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+                
                 is UiState.Loading -> {
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.Center)

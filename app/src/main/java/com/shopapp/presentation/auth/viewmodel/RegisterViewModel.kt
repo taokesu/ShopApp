@@ -17,7 +17,7 @@ class RegisterViewModel @Inject constructor(
     private val registerUseCase: RegisterUseCase
 ) : ViewModel() {
 
-    private val _registrationState = MutableStateFlow<UiState<Long>>(UiState.Loading)
+    private val _registrationState = MutableStateFlow<UiState<Long>>(UiState.Idle)
     val registrationState: StateFlow<UiState<Long>> = _registrationState
 
     fun register(
@@ -52,6 +52,6 @@ class RegisterViewModel @Inject constructor(
     }
 
     fun resetState() {
-        _registrationState.value = UiState.Loading
+        _registrationState.value = UiState.Idle
     }
 }

@@ -71,7 +71,8 @@ fun CustomerLoginScreen(
             is UiState.Error -> {
                 snackbarHostState.showSnackbar((loginState as UiState.Error).message)
             }
-            else -> {}
+            is UiState.Loading -> {}
+            is UiState.Idle -> {}
         }
     }
     
