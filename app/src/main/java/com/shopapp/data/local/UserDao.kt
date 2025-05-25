@@ -31,4 +31,7 @@ interface UserDao {
 
     @Query("SELECT COUNT(*) FROM users WHERE username = :username")
     suspend fun checkUsernameExists(username: String): Int
+
+    @Query("SELECT COUNT(*) FROM users")
+    suspend fun getUserCount(): Int
 }
