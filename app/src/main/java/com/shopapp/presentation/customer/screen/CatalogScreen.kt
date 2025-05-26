@@ -1,9 +1,11 @@
 package com.shopapp.presentation.customer.screen
 
+import android.app.Activity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import com.shopapp.data.session.UserSessionManager
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,6 +38,7 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Sort
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -50,19 +53,22 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.shopapp.data.model.Product
 import com.shopapp.data.model.ProductCategory
 import com.shopapp.presentation.common.UiState
+import com.shopapp.presentation.common.navigation.LogoutCallback
 import com.shopapp.presentation.common.navigation.Screen
 import com.shopapp.presentation.customer.viewmodel.CatalogViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CatalogScreen(
-    navController: NavController,
-    viewModel: CatalogViewModel = hiltViewModel()
+    navController: NavHostController,
+    viewModel: CatalogViewModel = hiltViewModel(),
+    logoutCallback: LogoutCallback? = null
 ) {
+    val userSessionManager: UserSessionManager = hiltViewModel<CatalogViewModel>().userSessionManager
     val productsState by viewModel.productsState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     
@@ -85,6 +91,15 @@ fun CatalogScreen(
                     }
                     IconButton(onClick = { navController.navigate(Screen.CustomerCart.route) }) {
                         Icon(Icons.Default.ShoppingCart, contentDescription = "Корзина")
+                    }
+                    IconButton(
+                        onClick = {
+                            userSessionManager.clearSession()
+                            // Используем callback для выхода из аккаунта
+                            logoutCallback?.onLogout()
+                        }
+                    ) {
+                        Icon(Icons.Default.ExitToApp, contentDescription = "Выйти из аккаунта")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(

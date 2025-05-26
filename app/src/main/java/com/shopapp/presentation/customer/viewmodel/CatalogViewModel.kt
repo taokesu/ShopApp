@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shopapp.data.model.Product
 import com.shopapp.data.model.ProductCategory
+import com.shopapp.data.session.UserSessionManager
 import com.shopapp.domain.usecase.product.GetProductsUseCase
 import com.shopapp.presentation.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CatalogViewModel @Inject constructor(
-    private val getProductsUseCase: GetProductsUseCase
+    private val getProductsUseCase: GetProductsUseCase,
+    val userSessionManager: UserSessionManager
 ) : ViewModel() {
 
     private val _productsState = MutableStateFlow<UiState<List<Product>>>(UiState.Loading)

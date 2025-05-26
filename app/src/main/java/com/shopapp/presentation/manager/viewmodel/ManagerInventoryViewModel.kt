@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shopapp.data.model.Product
 import com.shopapp.data.model.ProductCategory
+import com.shopapp.data.session.UserSessionManager
 import com.shopapp.data.repository.ProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ManagerInventoryViewModel @Inject constructor(
-    private val productRepository: ProductRepository
+    private val productRepository: ProductRepository,
+    val userSessionManager: UserSessionManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ManagerInventoryUiState())

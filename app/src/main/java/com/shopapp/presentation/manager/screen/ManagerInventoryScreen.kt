@@ -1,8 +1,10 @@
 package com.shopapp.presentation.manager.screen
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import com.shopapp.data.session.UserSessionManager
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -22,16 +24,22 @@ import com.shopapp.data.model.ProductCategory
 import com.shopapp.data.model.displayName
 import com.shopapp.presentation.common.components.LoadingIndicator
 import com.shopapp.presentation.common.components.ProductImageView
+import com.shopapp.presentation.common.navigation.LogoutCallback
+import com.shopapp.presentation.common.navigation.Screen
 import com.shopapp.presentation.manager.viewmodel.ManagerInventoryViewModel
 import kotlinx.coroutines.launch
+import androidx.navigation.NavHostController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ManagerInventoryScreen(
     navigateToAddProduct: () -> Unit,
     navigateToEditProduct: (Long) -> Unit,
-    viewModel: ManagerInventoryViewModel = hiltViewModel()
+    navController: NavHostController,
+    viewModel: ManagerInventoryViewModel = hiltViewModel(),
+    logoutCallback: LogoutCallback? = null
 ) {
+    val userSessionManager: UserSessionManager = hiltViewModel<ManagerInventoryViewModel>().userSessionManager
     val uiState by viewModel.uiState.collectAsState()
     val products = uiState.products
     val scope = rememberCoroutineScope()
@@ -54,6 +62,15 @@ fun ManagerInventoryScreen(
                     }
                     IconButton(onClick = { navigateToAddProduct() }) {
                         Icon(Icons.Default.Add, contentDescription = "Добавить товар")
+                    }
+                    IconButton(
+                        onClick = {
+                            userSessionManager.clearSession()
+                            // Используем callback для выхода из аккаунта
+                            logoutCallback?.onLogout()
+                        }
+                    ) {
+                        Icon(Icons.Default.ExitToApp, contentDescription = "Выйти из аккаунта")
                     }
                 }
             )

@@ -27,12 +27,13 @@ import com.shopapp.presentation.customer.screen.CartScreen
 import com.shopapp.presentation.customer.screen.CatalogScreen
 import com.shopapp.presentation.customer.screen.CheckoutScreen
 import com.shopapp.presentation.customer.screen.FavoritesScreen
+import com.shopapp.presentation.common.navigation.LogoutCallback
 import com.shopapp.presentation.customer.screen.OrderDetailScreen
 import com.shopapp.presentation.customer.screen.OrdersScreen
 import com.shopapp.presentation.customer.screen.ProductDetailScreen
 
 @Composable
-fun CustomerNavigation() {
+fun CustomerNavigation(logoutCallback: LogoutCallback? = null) {
     val navController = rememberNavController()
     
     Scaffold(
@@ -45,7 +46,8 @@ fun CustomerNavigation() {
         ) {
             composable(Screen.CustomerCatalog.route) {
                 CatalogScreen(
-                    navController = navController
+                    navController = navController,
+                    logoutCallback = logoutCallback
                 )
             }
             

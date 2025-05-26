@@ -27,9 +27,10 @@ import com.shopapp.presentation.manager.screen.ManagerInventoryScreen
 import com.shopapp.presentation.manager.screen.ManagerOrderDetailsScreen
 import com.shopapp.presentation.manager.screen.ManagerOrdersScreen
 import com.shopapp.presentation.manager.screen.ProductEditScreen
+import com.shopapp.presentation.common.navigation.LogoutCallback
 
 @Composable
-fun ManagerNavigation() {
+fun ManagerNavigation(logoutCallback: LogoutCallback? = null) {
     val navController = rememberNavController()
     
     Scaffold(
@@ -66,7 +67,9 @@ fun ManagerNavigation() {
                     },
                     navigateToEditProduct = { productId ->
                         navController.navigate(Screen.ManagerProductDetail.createRoute(productId))
-                    }
+                    },
+                    navController = navController,
+                    logoutCallback = logoutCallback
                 )
             }
             

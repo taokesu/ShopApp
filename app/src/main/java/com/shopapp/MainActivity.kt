@@ -19,6 +19,7 @@ import com.shopapp.presentation.auth.screen.CustomerLoginScreen
 import com.shopapp.presentation.auth.screen.CustomerRegistrationScreen
 import com.shopapp.presentation.auth.screen.ManagerLoginScreen
 import com.shopapp.presentation.auth.screen.RoleSelectionScreen
+import com.shopapp.presentation.common.navigation.LogoutCallback
 import com.shopapp.presentation.common.navigation.Screen
 import com.shopapp.presentation.customer.navigation.CustomerNavigation
 import com.shopapp.presentation.manager.navigation.ManagerNavigation
@@ -75,12 +76,28 @@ fun AppNavigation(navController: NavHostController) {
         
         // Экраны менеджера
         composable(Screen.ManagerOrders.route) {
-            ManagerNavigation()
+            val logoutCallback = object : LogoutCallback {
+                override fun onLogout() {
+                    // Очищаем стек навигации и переходим к экрану выбора роли
+                    navController.navigate(Screen.RoleSelection.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            }
+            ManagerNavigation(logoutCallback)
         }
         
         // Экраны покупателя
         composable(Screen.CustomerCatalog.route) {
-            CustomerNavigation()
+            val logoutCallback = object : LogoutCallback {
+                override fun onLogout() {
+                    // Очищаем стек навигации и переходим к экрану выбора роли
+                    navController.navigate(Screen.RoleSelection.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            }
+            CustomerNavigation(logoutCallback)
         }
     }
 }
