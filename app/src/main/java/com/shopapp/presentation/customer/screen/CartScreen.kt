@@ -3,6 +3,7 @@ package com.shopapp.presentation.customer.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import com.shopapp.data.session.UserSessionManager
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -63,7 +64,7 @@ import java.text.DecimalFormat
 fun CartScreen(
     navController: NavController,
     viewModel: CartViewModel = hiltViewModel(),
-    userId: Long = 1 // В реальном приложении ID пользователя должен быть получен из хранилища или передан параметром
+    userSessionManager: UserSessionManager = hiltViewModel<CartViewModel>().userSessionManager
 ) {
     val cartItemsState by viewModel.cartItemsState.collectAsState()
     val totalPrice by viewModel.totalPriceState.collectAsState()
@@ -72,8 +73,11 @@ fun CartScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     var showClearCartDialog by remember { mutableStateOf(false) }
     
+    // Получаем ID текущего пользователя из UserSessionManager
     LaunchedEffect(Unit) {
-        viewModel.loadCartItems(userId)
+        userSessionManager.getCurrentUserId()?.let { currentUserId ->
+            viewModel.loadCartItems(currentUserId)
+        }
     }
     
     LaunchedEffect(actionState) {
@@ -94,8 +98,10 @@ fun CartScreen(
             confirmButton = {
                 TextButton(
                     onClick = {
-                        viewModel.clearCart(userId)
-                        showClearCartDialog = false
+                        userSessionManager.getCurrentUserId()?.let { currentUserId ->
+                            viewModel.clearCart(currentUserId)
+                            showClearCartDialog = false
+                        }
                     }
                 ) {
                     Text("Да")
@@ -180,10 +186,14 @@ fun CartScreen(
                             cartItems = state.data,
                             totalPrice = totalPrice,
                             onQuantityChanged = { productId, quantity ->
-                                viewModel.updateQuantity(userId, productId, quantity)
+                                userSessionManager.getCurrentUserId()?.let { currentUserId ->
+                                    viewModel.updateQuantity(currentUserId, productId, quantity)
+                                }
                             },
                             onRemoveItem = { productId ->
-                                viewModel.removeItem(userId, productId)
+                                userSessionManager.getCurrentUserId()?.let { currentUserId ->
+                                    viewModel.removeItem(currentUserId, productId)
+                                }
                             },
                             onCheckoutClick = {
                                 navController.navigate(Screen.CustomerCheckout.route)

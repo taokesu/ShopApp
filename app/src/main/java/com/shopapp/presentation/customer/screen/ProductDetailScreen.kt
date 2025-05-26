@@ -3,6 +3,7 @@ package com.shopapp.presentation.customer.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import com.shopapp.data.session.UserSessionManager
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -62,7 +63,7 @@ fun ProductDetailScreen(
     navController: NavController,
     productId: Long,
     viewModel: ProductDetailViewModel = hiltViewModel(),
-    userId: Long = 1 // В реальном приложении ID пользователя должен быть получен из хранилища или передан параметром
+    userSessionManager: UserSessionManager = hiltViewModel<ProductDetailViewModel>().userSessionManager
 ) {
     val productState by viewModel.productState.collectAsState()
     val isFavorite by viewModel.isFavorite.collectAsState()
@@ -74,7 +75,9 @@ fun ProductDetailScreen(
     
     // Проверяем, является ли товар избранным
     LaunchedEffect(Unit) {
-        viewModel.checkIfFavorite(userId)
+        userSessionManager.getCurrentUserId()?.let { currentUserId ->
+            viewModel.checkIfFavorite(currentUserId)
+        }
     }
     
     // Обрабатываем состояние добавления в корзину
@@ -114,7 +117,11 @@ fun ProductDetailScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { viewModel.toggleFavorite(userId) }) {
+                    IconButton(onClick = { 
+                        userSessionManager.getCurrentUserId()?.let { currentUserId ->
+                            viewModel.toggleFavorite(currentUserId)
+                        }
+                    }) {
                         Icon(
                             if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                             contentDescription = "Добавить в избранное"
@@ -160,7 +167,9 @@ fun ProductDetailScreen(
                             }
                         },
                         onAddToCartClick = {
-                            viewModel.addToCart(userId, quantity)
+                            userSessionManager.getCurrentUserId()?.let { currentUserId ->
+                                viewModel.addToCart(currentUserId, quantity)
+                            }
                         }
                     )
                 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shopapp.data.model.Product
+import com.shopapp.data.session.UserSessionManager
 import com.shopapp.domain.usecase.cart.AddToCartUseCase
 import com.shopapp.domain.usecase.favorite.AddToFavoritesUseCase
 import com.shopapp.domain.usecase.favorite.RemoveFromFavoritesUseCase
@@ -24,6 +25,7 @@ class ProductDetailViewModel @Inject constructor(
     private val addToCartUseCase: AddToCartUseCase,
     private val addToFavoritesUseCase: AddToFavoritesUseCase,
     private val removeFromFavoritesUseCase: RemoveFromFavoritesUseCase,
+    val userSessionManager: UserSessionManager,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 

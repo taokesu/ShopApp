@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shopapp.data.model.FavoriteItem
 import com.shopapp.data.model.Product
+import com.shopapp.data.session.UserSessionManager
 import com.shopapp.domain.usecase.cart.AddToCartUseCase
 import com.shopapp.domain.usecase.favorite.GetFavoriteItemsUseCase
 import com.shopapp.domain.usecase.favorite.RemoveFromFavoritesUseCase
@@ -28,7 +29,8 @@ class FavoritesViewModel @Inject constructor(
     private val getFavoriteItemsUseCase: GetFavoriteItemsUseCase,
     private val getProductByIdUseCase: GetProductByIdUseCase,
     private val removeFromFavoritesUseCase: RemoveFromFavoritesUseCase,
-    private val addToCartUseCase: AddToCartUseCase
+    private val addToCartUseCase: AddToCartUseCase,
+    val userSessionManager: UserSessionManager
 ) : ViewModel() {
 
     private val _favoritesState = MutableStateFlow<UiState<List<FavoriteItemWithProduct>>>(UiState.Loading)

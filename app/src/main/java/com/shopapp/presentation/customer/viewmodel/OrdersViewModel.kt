@@ -6,6 +6,7 @@ import com.shopapp.data.model.Order
 import com.shopapp.data.model.OrderItem
 import com.shopapp.data.model.OrderItemWithProduct
 import com.shopapp.data.model.Product
+import com.shopapp.data.session.UserSessionManager
 import com.shopapp.domain.usecase.order.GetOrderItemsByOrderIdUseCase
 import com.shopapp.domain.usecase.order.GetUserOrdersUseCase
 import com.shopapp.domain.usecase.product.GetProductByIdUseCase
@@ -28,7 +29,8 @@ data class OrderWithItems(
 class OrdersViewModel @Inject constructor(
     private val getUserOrdersUseCase: GetUserOrdersUseCase,
     private val getOrderItemsByOrderIdUseCase: GetOrderItemsByOrderIdUseCase,
-    private val getProductByIdUseCase: GetProductByIdUseCase
+    private val getProductByIdUseCase: GetProductByIdUseCase,
+    val userSessionManager: UserSessionManager
 ) : ViewModel() {
 
     private val _ordersState = MutableStateFlow<UiState<List<Order>>>(UiState.Loading)

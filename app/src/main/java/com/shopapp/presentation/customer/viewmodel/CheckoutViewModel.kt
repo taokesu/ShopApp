@@ -6,6 +6,7 @@ import com.shopapp.data.model.CartItem
 import com.shopapp.data.model.Order
 import com.shopapp.data.model.OrderStatus
 import com.shopapp.data.model.Product
+import com.shopapp.data.session.UserSessionManager
 import com.shopapp.domain.usecase.cart.GetCartItemsUseCase
 import com.shopapp.domain.usecase.order.CreateOrderUseCase
 import com.shopapp.domain.usecase.product.GetProductByIdUseCase
@@ -24,7 +25,8 @@ import javax.inject.Inject
 class CheckoutViewModel @Inject constructor(
     private val getCartItemsUseCase: GetCartItemsUseCase,
     private val getProductByIdUseCase: GetProductByIdUseCase,
-    private val createOrderUseCase: CreateOrderUseCase
+    private val createOrderUseCase: CreateOrderUseCase,
+    val userSessionManager: UserSessionManager
 ) : ViewModel() {
 
     private val _cartItemsState = MutableStateFlow<UiState<List<CartItemWithProduct>>>(UiState.Loading)

@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.runtime.collectAsState
+import com.shopapp.data.session.UserSessionManager
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -60,13 +62,16 @@ import java.util.Locale
 fun OrdersScreen(
     navController: NavController,
     viewModel: OrdersViewModel = hiltViewModel(),
-    userId: Long = 1 // В реальном приложении ID пользователя должен быть получен из хранилища или передан параметром
+    userSessionManager: UserSessionManager = hiltViewModel<OrdersViewModel>().userSessionManager
 ) {
     val ordersState by viewModel.ordersState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     
+    // Получаем ID текущего пользователя из UserSessionManager
     LaunchedEffect(Unit) {
-        viewModel.loadUserOrders(userId)
+        userSessionManager.getCurrentUserId()?.let { currentUserId ->
+            viewModel.loadUserOrders(currentUserId)
+        }
     }
     
     Scaffold(

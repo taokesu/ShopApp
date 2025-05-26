@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shopapp.data.model.CartItem
 import com.shopapp.data.model.Product
+import com.shopapp.data.session.UserSessionManager
 import com.shopapp.domain.usecase.cart.ClearCartUseCase
 import com.shopapp.domain.usecase.cart.GetCartItemsUseCase
 import com.shopapp.domain.usecase.cart.RemoveFromCartUseCase
@@ -31,7 +32,8 @@ class CartViewModel @Inject constructor(
     private val getProductByIdUseCase: GetProductByIdUseCase,
     private val updateCartItemQuantityUseCase: UpdateCartItemQuantityUseCase,
     private val removeFromCartUseCase: RemoveFromCartUseCase,
-    private val clearCartUseCase: ClearCartUseCase
+    private val clearCartUseCase: ClearCartUseCase,
+    val userSessionManager: UserSessionManager
 ) : ViewModel() {
 
     private val _cartItemsState = MutableStateFlow<UiState<List<CartItemWithProduct>>>(UiState.Loading)

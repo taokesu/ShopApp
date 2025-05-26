@@ -3,6 +3,7 @@ package com.shopapp.presentation.auth.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shopapp.data.model.User
+import com.shopapp.data.session.UserSessionManager
 import com.shopapp.domain.usecase.auth.LoginUseCase
 import com.shopapp.presentation.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val userSessionManager: UserSessionManager
 ) : ViewModel() {
 
     private val _loginState = MutableStateFlow<UiState<User>>(UiState.Idle)
@@ -25,6 +27,8 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             loginUseCase(username, password)
                 .onSuccess { user ->
+                    // Сохраняем информацию о пользователе в сессию
+                    userSessionManager.saveSession(user)
                     _loginState.value = UiState.Success(user)
                 }
                 .onFailure { error ->

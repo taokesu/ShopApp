@@ -3,6 +3,7 @@ package com.shopapp.presentation.customer.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import com.shopapp.data.session.UserSessionManager
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -55,7 +56,7 @@ import com.shopapp.presentation.customer.viewmodel.CheckoutViewModel
 fun CheckoutScreen(
     navController: NavController,
     viewModel: CheckoutViewModel = hiltViewModel(),
-    userId: Long = 1 // В реальном приложении ID пользователя должен быть получен из хранилища или передан параметром
+    userSessionManager: UserSessionManager = hiltViewModel<CheckoutViewModel>().userSessionManager
 ) {
     val cartItemsState by viewModel.cartItemsState.collectAsState()
     val totalPrice by viewModel.totalPriceState.collectAsState()
@@ -70,7 +71,9 @@ fun CheckoutScreen(
     var address by remember { mutableStateOf("") }
     
     LaunchedEffect(Unit) {
-        viewModel.loadCartItems(userId)
+        userSessionManager.getCurrentUserId()?.let { currentUserId ->
+            viewModel.loadCartItems(currentUserId)
+        }
     }
     
     LaunchedEffect(orderState) {
@@ -208,7 +211,9 @@ fun CheckoutScreen(
                                         email = email,
                                         address = address
                                     )
-                                    viewModel.createOrder(userId = userId)
+                                    userSessionManager.getCurrentUserId()?.let { currentUserId ->
+                                        viewModel.createOrder(userId = currentUserId)
+                                    }
                                 },
                                 enabled = fullName.isNotBlank() && 
                                         phone.isNotBlank() && 

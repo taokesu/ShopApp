@@ -3,6 +3,7 @@ package com.shopapp.presentation.customer.screen
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import com.shopapp.data.session.UserSessionManager
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -58,15 +59,18 @@ import com.shopapp.presentation.customer.viewmodel.FavoritesViewModel
 fun FavoritesScreen(
     navController: NavController,
     viewModel: FavoritesViewModel = hiltViewModel(),
-    userId: Long = 1 // В реальном приложении ID пользователя должен быть получен из хранилища или передан параметром
+    userSessionManager: UserSessionManager = hiltViewModel<FavoritesViewModel>().userSessionManager
 ) {
     val favoritesState by viewModel.favoritesState.collectAsState()
     val actionState by viewModel.actionState.collectAsState()
     
     val snackbarHostState = remember { SnackbarHostState() }
     
+    // Получаем ID текущего пользователя из UserSessionManager
     LaunchedEffect(Unit) {
-        viewModel.loadFavorites(userId)
+        userSessionManager.getCurrentUserId()?.let { currentUserId ->
+            viewModel.loadFavorites(currentUserId)
+        }
     }
     
     LaunchedEffect(actionState) {
@@ -142,10 +146,14 @@ fun FavoritesScreen(
                                 navController.navigate(Screen.CustomerProductDetail.createRoute(productId))
                             },
                             onRemoveClick = { productId ->
-                                viewModel.removeFromFavorites(userId, productId)
+                                userSessionManager.getCurrentUserId()?.let { currentUserId ->
+                                    viewModel.removeFromFavorites(currentUserId, productId)
+                                }
                             },
                             onAddToCartClick = { productId ->
-                                viewModel.addToCart(userId, productId)
+                                userSessionManager.getCurrentUserId()?.let { currentUserId ->
+                                    viewModel.addToCart(currentUserId, productId)
+                                }
                             }
                         )
                     }
