@@ -86,21 +86,6 @@ fun CatalogScreen(
                     IconButton(onClick = { showSortDropdown = true }) {
                         Icon(Icons.Default.Sort, contentDescription = "Сортировка")
                     }
-                    IconButton(onClick = { navController.navigate(Screen.CustomerFavorites.route) }) {
-                        Icon(Icons.Default.FavoriteBorder, contentDescription = "Избранное")
-                    }
-                    IconButton(onClick = { navController.navigate(Screen.CustomerCart.route) }) {
-                        Icon(Icons.Default.ShoppingCart, contentDescription = "Корзина")
-                    }
-                    IconButton(
-                        onClick = {
-                            userSessionManager.clearSession()
-                            // Используем callback для выхода из аккаунта
-                            logoutCallback?.onLogout()
-                        }
-                    ) {
-                        Icon(Icons.Default.ExitToApp, contentDescription = "Выйти из аккаунта")
-                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,

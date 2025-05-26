@@ -63,15 +63,6 @@ fun ManagerInventoryScreen(
                     IconButton(onClick = { navigateToAddProduct() }) {
                         Icon(Icons.Default.Add, contentDescription = "Добавить товар")
                     }
-                    IconButton(
-                        onClick = {
-                            userSessionManager.clearSession()
-                            // Используем callback для выхода из аккаунта
-                            logoutCallback?.onLogout()
-                        }
-                    ) {
-                        Icon(Icons.Default.ExitToApp, contentDescription = "Выйти из аккаунта")
-                    }
                 }
             )
         }

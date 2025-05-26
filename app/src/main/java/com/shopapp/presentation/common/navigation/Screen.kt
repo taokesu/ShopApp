@@ -19,6 +19,7 @@ sealed class Screen(val route: String) {
         fun createRoute(orderId: Long) = "customer_order_detail/$orderId"
     }
     object CustomerFavorites : Screen("customer_favorites")
+    object CustomerProfile : Screen("customer_profile")
     
     // Экраны менеджера
     object ManagerOrders : Screen("manager_orders")
@@ -30,4 +31,5 @@ sealed class Screen(val route: String) {
         fun createRoute(productId: Long) = "manager_product_detail/$productId"
     }
     object ManagerAnalytics : Screen("manager_analytics") // Для аналитики продаж
+    object ManagerProfile : Screen("manager_profile")
 }
