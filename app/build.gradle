@@ -18,6 +18,13 @@ android {
     buildFeatures {
         buildConfig true
     }
+    
+    // Специальная настройка для тестовой компиляции
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        if (name.contains("Test")) {
+            kotlinOptions.jvmTarget = "11"
+        }
+    }
 
     defaultConfig {
         applicationId "com.shopapp"
@@ -39,7 +46,7 @@ android {
         }
     }
     compileOptions {
-        // Изменяем версию Java на 1.8 для совместимости с Android SDK 33
+        // Возвращаемся к Java 8 для совместимости с Android SDK
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
         // Полностью отключаем проверку core-library-desugaring для решения проблем с jlink
@@ -47,19 +54,30 @@ android {
     }
     
     testOptions {
-        // Полностью отключаем все тесты
-        unitTests.all {
-            enabled = false
-            includeAndroidResources = false
-        }
-        
-        // Настройки для Android-тестов 
+        // Настройки для Android-тестов
         animationsDisabled true
-        // Устанавливаем host вместо недопустимого 'NONE'
         execution 'host'
+        
+        // Минимальная настройка unit-тестов
+        unitTests {
+            returnDefaultValues = true
+            includeAndroidResources = true
+            
+            // Включаем вывод стандартных потоков для отладки
+            all {
+                testLogging {
+                    events "passed", "skipped", "failed", "standardOut", "standardError"
+                    showExceptions true
+                    showCauses true
+                    showStackTraces true
+                    exceptionFormat "full"
+                }
+                jvmArgs '-XX:+AllowRedefinitionToAddDeleteMethods'
+            }
+        }
     }
     kotlinOptions {
-        // Изменяем JVM target на 1.8 для совместимости с Android SDK 33
+        // Возвращаем JVM target на 1.8 для совместимости с Android SDK
         jvmTarget = "1.8"
         freeCompilerArgs += [
             "-Xopt-in=kotlin.RequiresOptIn",
@@ -142,6 +160,12 @@ dependencies {
     
     // Testing
     testImplementation 'junit:junit:4.13.2'
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+    testImplementation 'io.mockk:mockk:1.13.8'
+    testImplementation 'app.cash.turbine:turbine:1.0.0' // Для тестирования Flow
+    testImplementation 'com.google.truth:truth:1.1.5' // Более удобные assertions
+    
+    // Тесты для Android-компонентов
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
