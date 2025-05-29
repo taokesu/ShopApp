@@ -27,6 +27,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import com.shopapp.presentation.common.components.RequiredValidatedTextField
+import com.shopapp.presentation.common.components.OptionalValidatedTextField
+import com.shopapp.presentation.common.validation.ValidationUtils
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -117,19 +120,21 @@ fun CustomerRegistrationScreen(
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
                 
-                OutlinedTextField(
+                RequiredValidatedTextField(
                     value = username,
                     onValueChange = { username = it },
-                    label = { Text("Логин*") },
+                    label = "Имя пользователя",
+                    validate = { ValidationUtils.validateUsername(it) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 
                 Spacer(modifier = Modifier.height(8.dp))
                 
-                OutlinedTextField(
+                RequiredValidatedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Пароль*") },
+                    label = "Пароль",
+                    validate = { ValidationUtils.validatePassword(it) },
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     modifier = Modifier.fillMaxWidth()
@@ -137,76 +142,84 @@ fun CustomerRegistrationScreen(
                 
                 Spacer(modifier = Modifier.height(8.dp))
                 
-                OutlinedTextField(
+                RequiredValidatedTextField(
                     value = confirmPassword,
                     onValueChange = { confirmPassword = it },
-                    label = { Text("Подтверждение пароля*") },
+                    label = "Подтверждение пароля",
+                    validate = { ValidationUtils.validatePasswordConfirmation(password, it) },
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    modifier = Modifier.fillMaxWidth(),
-                    isError = password != confirmPassword && confirmPassword.isNotBlank()
+                    modifier = Modifier.fillMaxWidth()
                 )
-                
-                if (password != confirmPassword && confirmPassword.isNotBlank()) {
-                    Text(
-                        text = "Пароли не совпадают",
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.align(Alignment.Start)
-                    )
-                }
                 
                 Spacer(modifier = Modifier.height(8.dp))
                 
-                OutlinedTextField(
+                RequiredValidatedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("Email*") },
+                    label = "Email",
+                    validate = { ValidationUtils.validateEmail(it) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     modifier = Modifier.fillMaxWidth()
                 )
                 
                 Spacer(modifier = Modifier.height(8.dp))
                 
-                OutlinedTextField(
+                OptionalValidatedTextField(
                     value = fullName,
                     onValueChange = { fullName = it },
-                    label = { Text("ФИО") },
+                    label = "ФИО",
+                    validate = { ValidationUtils.validateFullName(it) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 
                 Spacer(modifier = Modifier.height(8.dp))
                 
-                OutlinedTextField(
+                OptionalValidatedTextField(
                     value = phone,
                     onValueChange = { phone = it },
-                    label = { Text("Телефон") },
+                    label = "Телефон",
+                    validate = { ValidationUtils.validatePhone(it) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                     modifier = Modifier.fillMaxWidth()
                 )
                 
                 Spacer(modifier = Modifier.height(8.dp))
                 
-                OutlinedTextField(
+                OptionalValidatedTextField(
                     value = address,
                     onValueChange = { address = it },
-                    label = { Text("Адрес") },
+                    label = "Адрес",
+                    validate = { ValidationUtils.validateAddress(it) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 
                 Spacer(modifier = Modifier.height(24.dp))
                 
+                // Проверяем все поля перед отправкой
+                val usernameValidation = ValidationUtils.validateUsername(username)
+                val passwordValidation = ValidationUtils.validatePassword(password)
+                val passwordConfirmationValidation = ValidationUtils.validatePasswordConfirmation(password, confirmPassword)
+                val emailValidation = ValidationUtils.validateEmail(email)
+                val phoneValidation = ValidationUtils.validatePhone(phone)
+                val fullNameValidation = ValidationUtils.validateFullName(fullName)
+                val addressValidation = ValidationUtils.validateAddress(address)
+                
+                val formIsValid = usernameValidation.isValid && 
+                                  passwordValidation.isValid && 
+                                  passwordConfirmationValidation.isValid && 
+                                  emailValidation.isValid && 
+                                  phoneValidation.isValid && 
+                                  fullNameValidation.isValid && 
+                                  addressValidation.isValid
+                
                 Button(
                     onClick = {
-                        if (password == confirmPassword) {
+                        if (formIsValid) {
                             viewModel.register(username, password, email, fullName, phone, address)
                         }
                     },
-                    enabled = username.isNotBlank() && 
-                            password.isNotBlank() && 
-                            email.isNotBlank() && 
-                            password == confirmPassword &&
-                            registrationState !is UiState.Loading,
+                    enabled = formIsValid && registrationState !is UiState.Loading,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     // Показываем текст кнопки или индикатор загрузки внутри кнопки

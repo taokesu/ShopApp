@@ -45,6 +45,8 @@ import com.shopapp.data.model.UserRole
 import com.shopapp.presentation.auth.viewmodel.LoginViewModel
 import com.shopapp.presentation.common.UiState
 import com.shopapp.presentation.common.navigation.Screen
+import com.shopapp.presentation.common.components.RequiredValidatedTextField
+import com.shopapp.presentation.common.validation.ValidationUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -111,19 +113,21 @@ fun ManagerLoginScreen(
                     modifier = Modifier.padding(bottom = 24.dp)
                 )
                 
-                OutlinedTextField(
+                RequiredValidatedTextField(
                     value = username,
                     onValueChange = { username = it },
-                    label = { Text("Логин") },
+                    label = "Логин",
+                    validate = { ValidationUtils.validateUsername(it) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 
                 Spacer(modifier = Modifier.height(16.dp))
                 
-                OutlinedTextField(
+                RequiredValidatedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Пароль") },
+                    label = "Пароль",
+                    validate = { ValidationUtils.validatePassword(it) },
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     modifier = Modifier.fillMaxWidth()
@@ -131,9 +135,14 @@ fun ManagerLoginScreen(
                 
                 Spacer(modifier = Modifier.height(24.dp))
                 
+                // Проверяем валидность данных перед отправкой
+                val usernameValidation = ValidationUtils.validateUsername(username)
+                val passwordValidation = ValidationUtils.validatePassword(password)
+                val formIsValid = usernameValidation.isValid && passwordValidation.isValid
+                
                 Button(
                     onClick = { viewModel.login(username, password) },
-                    enabled = username.isNotBlank() && password.isNotBlank() && loginState !is UiState.Loading,
+                    enabled = formIsValid && loginState !is UiState.Loading,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     if (loginState is UiState.Loading) {

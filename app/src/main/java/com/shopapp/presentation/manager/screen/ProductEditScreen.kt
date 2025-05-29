@@ -18,6 +18,10 @@ import com.shopapp.data.model.Product
 import com.shopapp.data.model.ProductCategory
 import com.shopapp.data.model.displayName
 import com.shopapp.presentation.common.components.LoadingIndicator
+import com.shopapp.presentation.common.components.RequiredValidatedTextField
+import com.shopapp.presentation.common.components.OptionalValidatedTextField
+import com.shopapp.presentation.common.validation.ValidationResult
+import com.shopapp.presentation.common.validation.ValidationUtils
 import com.shopapp.presentation.manager.viewmodel.ProductEditViewModel
 import kotlinx.coroutines.launch
 
@@ -82,28 +86,24 @@ fun ProductEditScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     // Поле названия товара
-                    OutlinedTextField(
+                    RequiredValidatedTextField(
                         value = uiState.name,
                         onValueChange = { viewModel.updateName(it) },
-                        label = { Text("Название товара") },
-                        modifier = Modifier.fillMaxWidth(),
-                        isError = uiState.nameError != null,
-                        supportingText = {
-                            if (uiState.nameError != null) {
-                                Text(uiState.nameError!!)
-                            }
-                        }
+                        label = "Название товара",
+                        validate = { ValidationUtils.validateProductName(it) },
+                        modifier = Modifier.fillMaxWidth()
                     )
 
                     // Поле описания товара
-                    OutlinedTextField(
+                    OptionalValidatedTextField(
                         value = uiState.description,
                         onValueChange = { viewModel.updateDescription(it) },
-                        label = { Text("Описание товара") },
+                        label = "Описание товара",
+                        validate = { ValidationUtils.validateProductDescription(it) },
                         modifier = Modifier.fillMaxWidth(),
                         minLines = 3,
                         maxLines = 5,
-                        isError = uiState.descriptionError != null,
+                        singleLine = false,
                         supportingText = {
                             if (uiState.descriptionError != null) {
                                 Text(uiState.descriptionError!!)
@@ -147,56 +147,49 @@ fun ProductEditScreen(
                     }
 
                     // Поле URL изображения
-                    OutlinedTextField(
+                    OptionalValidatedTextField(
                         value = uiState.imageUrl,
                         onValueChange = { viewModel.updateImageUrl(it) },
-                        label = { Text("URL изображения") },
+                        label = "URL изображения",
+                        validate = { ValidationResult(isValid = true) }, // Простая валидация URL
                         modifier = Modifier.fillMaxWidth()
                     )
 
                     // Поле цены
-                    OutlinedTextField(
+                    RequiredValidatedTextField(
                         value = uiState.price,
                         onValueChange = { viewModel.updatePrice(it) },
-                        label = { Text("Цена (₽)") },
+                        label = "Цена (₽)",
+                        validate = { ValidationUtils.validatePrice(it) },
                         modifier = Modifier.fillMaxWidth(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                        isError = uiState.priceError != null,
-                        supportingText = {
-                            if (uiState.priceError != null) {
-                                Text(uiState.priceError!!)
-                            }
-                        }
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                     )
 
                     // Поле количества
-                    OutlinedTextField(
+                    RequiredValidatedTextField(
                         value = uiState.quantity,
                         onValueChange = { viewModel.updateQuantity(it) },
-                        label = { Text("Количество на складе") },
+                        label = "Количество на складе",
+                        validate = { ValidationUtils.validateQuantity(it) },
                         modifier = Modifier.fillMaxWidth(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        isError = uiState.quantityError != null,
-                        supportingText = {
-                            if (uiState.quantityError != null) {
-                                Text(uiState.quantityError!!)
-                            }
-                        }
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
 
                     // Поле размера
-                    OutlinedTextField(
+                    OptionalValidatedTextField(
                         value = uiState.size,
                         onValueChange = { viewModel.updateSize(it) },
-                        label = { Text("Размер") },
+                        label = "Размер",
+                        validate = { ValidationResult(isValid = true) }, // Простая валидация
                         modifier = Modifier.fillMaxWidth()
                     )
 
                     // Поле цвета
-                    OutlinedTextField(
+                    OptionalValidatedTextField(
                         value = uiState.color,
                         onValueChange = { viewModel.updateColor(it) },
-                        label = { Text("Цвет") },
+                        label = "Цвет",
+                        validate = { ValidationResult(isValid = true) }, // Простая валидация
                         modifier = Modifier.fillMaxWidth()
                     )
 
