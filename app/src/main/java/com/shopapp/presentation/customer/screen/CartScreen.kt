@@ -47,6 +47,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -246,8 +247,11 @@ fun CartContent(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                .padding(vertical = 16.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFFF5F5F5) // Светлый серый цвет
+            )
         ) {
             Column(
                 modifier = Modifier.padding(16.dp)
@@ -259,7 +263,8 @@ fun CartContent(
                     Text(
                         text = "Итого:",
                         fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
+                        fontSize = 18.sp,
+                        color = Color.Black
                     )
                     
                     Text(
@@ -321,14 +326,16 @@ fun CartItemRow(
         ) {
             Text(
                 text = product.name,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
             )
             
             Spacer(modifier = Modifier.height(4.dp))
             
             Text(
                 text = "${formatPrice(product.price)} ₽",
-                color = MaterialTheme.colorScheme.primary
+                color = Color.Black,
+                fontWeight = FontWeight.Medium
             )
         }
         
@@ -349,7 +356,8 @@ fun CartItemRow(
             
             Text(
                 text = "${cartItem.quantity}",
-                modifier = Modifier.padding(horizontal = 4.dp)
+                modifier = Modifier.padding(horizontal = 4.dp),
+                color = Color.Black
             )
             
             IconButton(

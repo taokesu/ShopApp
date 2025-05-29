@@ -47,6 +47,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -246,6 +247,9 @@ fun ProductItem(
             .clickable(onClick = onClick),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 4.dp
+        ),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFF5F5F5) // Светлый серый цвет
         )
     ) {
         Row(
@@ -280,14 +284,16 @@ fun ProductItem(
                     text = product.name,
                     fontWeight = FontWeight.Bold,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    color = Color.Black
                 )
                 
                 Spacer(modifier = Modifier.height(4.dp))
                 
                 Text(
                     text = "Категория: ${getCategoryDisplayName(product.category)}",
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Black
                 )
                 
                 Spacer(modifier = Modifier.height(4.dp))
@@ -300,7 +306,8 @@ fun ProductItem(
                     Text(
                         text = "${product.price} ₽",
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
                     )
                     
                     if (product.quantity <= 5 && product.quantity > 0) {

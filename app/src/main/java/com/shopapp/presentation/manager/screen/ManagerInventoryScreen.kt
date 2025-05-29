@@ -1,6 +1,7 @@
 package com.shopapp.presentation.manager.screen
 
 import android.app.Activity
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -184,7 +185,12 @@ fun ProductInventoryItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFF5F5F5) // Светлый серый цвет
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        border = BorderStroke(1.dp, Color.LightGray)
     ) {
         Row(
             modifier = Modifier
@@ -205,30 +211,34 @@ fun ProductInventoryItem(
                 Text(
                     text = product.name,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
+                    color = Color.Black
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Категория: ${product.category.displayName}",
-                    fontSize = 14.sp
+                    text = product.category.displayName,
+                    fontSize = 14.sp,
+                    color = Color.Black
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "Цена: ${product.price} ₽",
-                    fontSize = 14.sp
+                    fontSize = 14.sp,
+                    color = Color.Black
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "В наличии: ",
-                        fontSize = 14.sp
+                        text = "На складе: ",
+                        fontSize = 14.sp,
+                        color = Color.Black
                     )
                     Text(
-                        text = "${product.quantity}",
+                        text = "${product.quantity} шт.",
                         fontSize = 14.sp,
-                        color = if (product.quantity <= 5) Color.Red else Color.Unspecified,
+                        color = if (product.quantity <= 5) MaterialTheme.colorScheme.error else Color.Black,
                         fontWeight = if (product.quantity <= 5) FontWeight.Bold else FontWeight.Normal
                     )
                 }
@@ -241,7 +251,7 @@ fun ProductInventoryItem(
                     Icon(Icons.Default.Add, contentDescription = "Увеличить количество")
                 }
                 
-                Text(text = "${product.quantity}", fontSize = 16.sp)
+                Text(text = "${product.quantity}", fontSize = 16.sp, color = Color.Black)
                 
                 IconButton(
                     onClick = onDecreaseQuantity,
@@ -270,10 +280,13 @@ fun LowStockWarningCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() },
+            .clickable { onClick() }
+            .padding(horizontal = 16.dp, vertical = 4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.errorContainer
-        )
+            containerColor = Color(0xFFFFF0F0) // Очень светлый красный
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        border = BorderStroke(1.dp, Color(0xFFFFCCCC)) // Светлая красная обводка
     ) {
         Row(
             modifier = Modifier

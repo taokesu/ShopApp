@@ -31,5 +31,6 @@ sealed class Screen(val route: String) {
         fun createRoute(productId: Long) = "manager_product_detail/$productId"
     }
     object ManagerAnalytics : Screen("manager_analytics") // Для аналитики продаж
+    object ManagerStatisticsExport : Screen("manager_statistics_export") // Для экспорта статистики в Excel
     object ManagerProfile : Screen("manager_profile")
 }

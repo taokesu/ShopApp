@@ -174,7 +174,10 @@ fun OrderItem(
             .fillMaxWidth()
             .padding(8.dp)
             .clickable { onClick() },
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFF5F5F5) // Светлый серый цвет
+        )
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -187,7 +190,8 @@ fun OrderItem(
                 Text(
                     text = "Заказ #${order.id}",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
+                    color = Color.Black
                 )
                 
                 Icon(
@@ -200,14 +204,18 @@ fun OrderItem(
             
             Text(
                 text = "Дата: ${formatDate(order.orderDate)}",
-                fontSize = 14.sp
+                fontSize = 14.sp,
+                color = Color.Black
             )
             
             Spacer(modifier = Modifier.height(4.dp))
             
+            // Добавляем форматирование цены
+            val formattedPrice = String.format("%.2f", order.totalAmount)
             Text(
-                text = "Сумма: ${formatPrice(order.totalAmount)} ₽",
-                fontSize = 14.sp
+                text = "Сумма: $formattedPrice ₽",
+                fontSize = 14.sp,
+                color = Color.Black
             )
             
             Spacer(modifier = Modifier.height(8.dp))
@@ -221,7 +229,8 @@ fun OrderItem(
             ) {
                 Text(
                     text = "Статус: ",
-                    fontSize = 14.sp
+                    fontSize = 14.sp,
+                    color = Color.Black
                 )
                 
                 Spacer(modifier = Modifier.width(4.dp))

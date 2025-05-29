@@ -42,6 +42,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -208,7 +209,10 @@ fun FavoriteItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFF5F5F5) // Светлый серый цвет
+        )
     ) {
         Column(
             modifier = Modifier.padding(8.dp)
@@ -239,7 +243,8 @@ fun FavoriteItem(
                         text = product.name,
                         fontWeight = FontWeight.Bold,
                         maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        color = Color.Black
                     )
                     
                     Spacer(modifier = Modifier.height(4.dp))
@@ -247,6 +252,7 @@ fun FavoriteItem(
                     Text(
                         text = "Категория: ${getCategoryDisplayName(product.category)}",
                         style = MaterialTheme.typography.bodySmall,
+                        color = Color.Black
                     )
                     
                     Spacer(modifier = Modifier.height(4.dp))
@@ -254,7 +260,8 @@ fun FavoriteItem(
                     Text(
                         text = "${formatPrice(product.price)} ₽",
                         style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.primary
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold
                     )
                 }
             }

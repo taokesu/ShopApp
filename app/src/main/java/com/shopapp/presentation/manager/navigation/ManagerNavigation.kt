@@ -3,6 +3,7 @@ package com.shopapp.presentation.manager.navigation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Analytics
+import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.Inventory
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -32,6 +33,7 @@ import com.shopapp.presentation.manager.screen.ManagerOrderDetailsScreen
 import com.shopapp.presentation.manager.screen.ManagerOrdersScreen
 import com.shopapp.presentation.manager.screen.ManagerProfileScreen
 import com.shopapp.presentation.manager.screen.ProductEditScreen
+import com.shopapp.presentation.manager.screen.StatisticsExportScreen
 import com.shopapp.presentation.common.navigation.LogoutCallback
 
 @Composable
@@ -93,6 +95,12 @@ fun ManagerNavigation(logoutCallback: LogoutCallback? = null) {
                 ManagerAnalyticsScreen()
             }
             
+            composable(Screen.ManagerStatisticsExport.route) {
+                StatisticsExportScreen(
+                    navController = navController
+                )
+            }
+            
             composable(Screen.ManagerProfile.route) {
                 ManagerProfileScreen(
                     navController = navController,
@@ -113,6 +121,7 @@ fun ManagerBottomNavigationBar(navController: NavHostController) {
         Screen.ManagerOrders.route,
         Screen.ManagerInventory.route,
         Screen.ManagerAnalytics.route,
+        Screen.ManagerStatisticsExport.route,
         Screen.ManagerProfile.route
     )
     
@@ -169,6 +178,26 @@ fun ManagerBottomNavigationBar(navController: NavHostController) {
                 selected = currentRoute == Screen.ManagerAnalytics.route,
                 onClick = {
                     navController.navigate(Screen.ManagerAnalytics.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+            
+            NavigationBarItem(
+                icon = { Icon(Icons.Default.FileDownload, contentDescription = "Экспорт") },
+                label = { Text(
+                    text = "Экспорт",
+                    fontSize = 11.sp,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1
+                ) },
+                selected = currentRoute == Screen.ManagerStatisticsExport.route,
+                onClick = {
+                    navController.navigate(Screen.ManagerStatisticsExport.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }

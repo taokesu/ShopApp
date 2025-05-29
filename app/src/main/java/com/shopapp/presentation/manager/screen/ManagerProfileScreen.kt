@@ -79,7 +79,10 @@ fun ManagerProfileScreen(
         ) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFFF5F5F5) // Очень светлый серый цвет
+                )
             ) {
                 Column(
                     modifier = Modifier
@@ -100,8 +103,9 @@ fun ManagerProfileScreen(
                     
                     Text(
                         text = "Имя пользователя",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Color.Gray
+                        style = MaterialTheme.typography.labelMedium,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Medium
                     )
                     Text(
                         text = uiState.user?.username ?: "",
@@ -113,8 +117,9 @@ fun ManagerProfileScreen(
                     
                     Text(
                         text = "Email",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Color.Gray
+                        style = MaterialTheme.typography.labelMedium,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Medium
                     )
                     Text(
                         text = uiState.user?.email ?: "",
@@ -125,7 +130,10 @@ fun ManagerProfileScreen(
             
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFFF5F5F5) // Очень светлый серый цвет
+                )
             ) {
                 Column(
                     modifier = Modifier
@@ -136,7 +144,8 @@ fun ManagerProfileScreen(
                     Text(
                         text = "Личные данные",
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
                     )
                     
                     OutlinedTextField(
@@ -145,7 +154,12 @@ fun ManagerProfileScreen(
                         label = { Text("ФИО") },
                         modifier = Modifier.fillMaxWidth(),
                         enabled = isEditing,
-                        singleLine = true
+                        singleLine = true,
+                        colors = OutlinedTextFieldDefaults.colors(
+                            disabledTextColor = Color.Black,
+                            disabledBorderColor = Color.Gray,
+                            disabledLabelColor = Color.Black
+                        )
                     )
                     
                     OutlinedTextField(
@@ -154,7 +168,12 @@ fun ManagerProfileScreen(
                         label = { Text("Телефон") },
                         modifier = Modifier.fillMaxWidth(),
                         enabled = isEditing,
-                        singleLine = true
+                        singleLine = true,
+                        colors = OutlinedTextFieldDefaults.colors(
+                            disabledTextColor = Color.Black,
+                            disabledBorderColor = Color.Gray,
+                            disabledLabelColor = Color.Black
+                        )
                     )
                 }
             }

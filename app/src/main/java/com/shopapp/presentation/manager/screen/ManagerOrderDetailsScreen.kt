@@ -1,5 +1,6 @@
 package com.shopapp.presentation.manager.screen
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,6 +13,7 @@ import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -198,7 +200,12 @@ fun OrderDetailsContent(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp)
+                    .padding(8.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFFF5F5F5) // Светлый серый цвет
+                ),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                border = BorderStroke(1.dp, Color.LightGray)
             ) {
                 Column(
                     modifier = Modifier
@@ -305,7 +312,12 @@ fun OrderInfoRow(
 @Composable
 fun OrderItemCard(item: OrderItemWithProduct) {
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFF5F5F5) // Светлый серый цвет
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        border = BorderStroke(1.dp, Color.LightGray)
     ) {
         Row(
             modifier = Modifier
@@ -325,7 +337,8 @@ fun OrderItemCard(item: OrderItemWithProduct) {
             ) {
                 Text(
                     text = item.product.name,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
                 )
                 
                 if (!item.product.size.isNullOrBlank() || !item.product.color.isNullOrBlank()) {
@@ -336,7 +349,8 @@ fun OrderItemCard(item: OrderItemWithProduct) {
                             if (!item.product.size.isNullOrBlank() && !item.product.color.isNullOrBlank()) append(" | ")
                             if (!item.product.color.isNullOrBlank()) append("Цвет: ${item.product.color}")
                         },
-                        fontSize = 12.sp
+                        fontSize = 12.sp,
+                        color = Color.Black
                     )
                 }
             }
@@ -346,14 +360,16 @@ fun OrderItemCard(item: OrderItemWithProduct) {
             ) {
                 Text(
                     text = "${item.orderItem.quantity} × ${item.product.price} ₽",
-                    fontSize = 14.sp
+                    fontSize = 14.sp,
+                    color = Color.Black
                 )
                 
                 Spacer(modifier = Modifier.height(4.dp))
                 
                 Text(
                     text = "${item.orderItem.quantity * item.product.price} ₽",
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
                 )
             }
         }

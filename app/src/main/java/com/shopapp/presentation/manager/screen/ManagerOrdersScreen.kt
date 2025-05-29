@@ -1,5 +1,6 @@
 package com.shopapp.presentation.manager.screen
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -162,7 +163,12 @@ fun OrderItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onOrderClick() }
-            .padding(vertical = 4.dp)
+            .padding(vertical = 2.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFF5F5F5) // Светлый серый цвет
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp), // Добавляем тень
+        border = BorderStroke(1.dp, Color.LightGray) // Добавляем обводку
     ) {
         Column(
             modifier = Modifier
@@ -177,8 +183,18 @@ fun OrderItem(
                 Text(
                     text = "Заказ #${order.id}",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
+                    color = Color.Black
                 )
+                
+                // Используем FilterChip вместо Chip
+                val statusColor = when (order.status) {
+                    OrderStatus.PENDING -> Color(0xFF2196F3) // Blue
+                    OrderStatus.PROCESSING -> Color(0xFFFFA000) // Amber
+                    OrderStatus.SHIPPED -> Color(0xFF4CAF50) // Green
+                    OrderStatus.DELIVERED -> Color(0xFF009688) // Teal
+                    OrderStatus.CANCELLED -> Color(0xFFF44336) // Red
+                }
                 
                 FilterChip(
                     selected = false,
@@ -197,10 +213,18 @@ fun OrderItem(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "Дата: $formattedDate")
+                // Форматируем дату заказа
+                val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+                // Прямой формат даты, так как order.orderDate уже имеет тип Date
+                val formattedDate = dateFormat.format(order.orderDate)
+                Text(
+                    text = "Дата: $formattedDate",
+                    color = Color.Black
+                )
                 Text(
                     text = "Сумма: ${order.totalAmount} ₽",
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
                 )
             }
             
@@ -213,7 +237,8 @@ fun OrderItem(
             ) {
                 Text(
                     text = "Клиент: ${order.userName}",
-                    fontSize = 14.sp
+                    fontSize = 14.sp,
+                    color = Color.Black
                 )
                 
                 IconButton(onClick = onOrderClick) {
